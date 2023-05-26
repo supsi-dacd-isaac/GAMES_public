@@ -14,7 +14,9 @@ Needed packages are in requirements.txt\
  
 ## Simulated mobility scenarios are available   
 * For instance, the dir `./mobility/simulated`  contins:
-** files `station_matrix.zip` containins simulated time series of EV presences in the stations  
+** file `sim_reserv_df_in_zurich_1_day_from_userdemand.csv` simulated reservations for one day in Zurich (generated using a pool of user deamands for mobility) 
+** file `sim_presence_matrx_in_zurich_6_months_statistical_sampler.csv` simulated presence matrix for six months in Zurich (generated with a statistical sampler) 
+
 
 ## What to run
 #  
