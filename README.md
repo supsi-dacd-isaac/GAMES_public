@@ -48,6 +48,21 @@ results_daily = get_daily_profiles_data(df_sequence)
 matrix_day = results_daily['matrix_daily_departures'] # a [n_days x 24] array contining the total number of departures for each day and hour in the data set 
 ```
 
+* demo_zoning_analysis
+```python
+#  example of macroscopic zoning  
+n_disretized  = [21, 21]
+# grid partition of lat and lon.... n_disretized[0] x n_disretized[1] ....append zone lat,lon and indices to the dataframe
+df_sequence_with_zones, linspace_lat, linspace_lon = define_zones(df_sequence, n_disretized_lat_lon=n_disretized) 
+#  get statistics of idle times and trip durations on each zone
+Idle_duration_zone_stats, Trips_duration_zone_stats = matrix_stats_idle_duration(df_sequence_with_zones)
+#  plot map (parking times)
+plot_zone_duration_stats(Idle_duration_zone_stats['mean'], Idle_duration_zone_stats['std'], TelAviv,  label1='Mean idle time', label2='STD idle time')
+#  plot inflows and outflows 
+plot_density_arrivals_departures_net_out_flows(Trips_duration_zone_stats['n_samples'],
+                                               Idle_duration_zone_stats['n_samples'], TelAviv)
+                                               
+```
 * demo_train_total_mobility_demand_forecaster
 * demo_space_time_probabilistic_forecaster
 
