@@ -18,7 +18,7 @@ Needed packages are in requirements.txt\
 
 ## What to run
 #  
-*demo_traffic_model
+* demo_traffic_model
 ```python
 # Defne macroscopic traffic model &  street network for two geographical regions 
 TelAviv = Macroscopic_traffic_model(geographical_area = 'Tel Aviv, Israel')
@@ -40,11 +40,16 @@ TelAviv.plot_trip_routes(df_trips, show=True, route_alpha=0.9)
 routes, df_route_features = TelAviv.get_shortest_routes_and_features(df_trips) # routes= list of routes, df_route_features= data frame with features of the trip and shortest routes
 
 ```
-* demo_data_loader_pre_process_and_stats
+* demo_data_loader_pre_process 
 ```python
 df_autotel = data_loader(data_dir='datasets/autotel', file_name='autotel_2021_2022.pkl') 
 df, df_sequence = preprocess_trip_data_frame(df,TelAviv.get_minmax_lon_lat())
 results_daily = get_daily_profiles_data(df_sequence)
+matrix_day = results_daily['matrix_daily_departures'] # a [n_days x 24] array contining the total number of departures for each day and hour in the data set 
 ```
-# 
+
+* demo_train_total_mobility_demand_forecaster
+* demo_space_time_probabilistic_forecaster
+
+
 
