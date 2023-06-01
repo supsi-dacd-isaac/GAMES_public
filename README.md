@@ -49,9 +49,10 @@ df, df_sequence = preprocess_trip_data_frame(df,TelAviv.get_minmax_lon_lat())
 results_daily = get_daily_profiles_data(df_sequence)
 matrix_day = results_daily['matrix_daily_departures'] # a [n_days x 24] array contining the total number of departures for each day and hour in the data set 
 ```
-
-![alt text](figs_repo/Zurich_streetmap.png)
-![alt text](figs_repo/TelAviv_map_shortest_trip_path_examples.png)
+<div style="display: flex;">
+  <img src="figs_repo/Zurich_streetmap.png" alt="Image 1" width="400" />
+  <img src="figs_repo/TelAviv_map_shortest_trip_path_examples.png" alt="Image 2" width="400" />
+</div> 
 
 * demo_zoning_analysis
 ```python
