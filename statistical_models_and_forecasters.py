@@ -17,6 +17,10 @@ from sklearn.model_selection import GridSearchCV, cross_val_score, train_test_sp
 from sklearn.ensemble import (RandomForestRegressor)#,  AdaBoostRegressor,  GradientBoostingRegressor,   HistGradientBoostingRegressor)
 import numpy as np
 
+import pandas as pd
+from mobility_data_analysis_toolbox import get_daily_profiles_data
+
+
 class MobilityDemandForecaster:
     def __init__(self, n_workers: int = 4):
         # Create the RandomForestRegressor model
@@ -26,9 +30,9 @@ class MobilityDemandForecaster:
 
 
     def fit(self, X, y):
-        param_grid = dict(n_estimators=[50],# Number of trees
-                          max_depth=[50, 150],# Max depth of the tree
-                          min_samples_split=[2, 5])  # Minimum number of samples required to split a node
+        param_grid = dict(n_estimators=[50], # Number of trees
+                          max_depth=[50], # Max depth of the tree
+                          min_samples_split=[5])  # Minimum number of samples required to split a node
         # Perform grid search with cross-validation
         grid_search = GridSearchCV(self.model, param_grid, cv=5, scoring='neg_mean_squared_error')
         grid_search.fit(X, y)
@@ -48,7 +52,28 @@ class MobilityDemandForecaster:
         uncertainty = [y_pred_low, y_pred_up]  # Assuming normal distribution, 95% confidence
         return y_pred, uncertainty
 
-
+def prepare_forecaster_data(df_sequence, H_past: int =12, H_future: int =24, n_test: int =500):
+    daily_data = get_daily_profiles_data(df_sequence)
+    ## prepare data for predictor
+    DEMAND = daily_data['matrix_daily_departures'][:-1]
+    time_features = daily_data['mat_time_features'][:-1]
+    WEEKDAYS = np.array([time_features[:, 0] for _ in range(24)])
+    HOLIDAY_INDICATOR = np.array([time_features[:, 1] for _ in range(24)])
+    HOURS = np.array([range(24) for _ in DEMAND])
+    DEMAND, WEEKDAYS, HOLIDAY_INDICATOR, HOURS = DEMAND.flatten(),  WEEKDAYS.flatten(),  HOLIDAY_INDICATOR.flatten(), HOURS.flatten()
+    n_hours = len(DEMAND)
+    X, y= [], []
+    for t in range(n_hours-H_future):
+        """prepare data for fitting demand/departures prediction models"""
+        if t>=H_past:
+            X.append([WEEKDAYS[t], HOURS[t], HOLIDAY_INDICATOR[t]]+DEMAND[t-H_past:t].tolist())
+            y.append(DEMAND[t:t+H_future].tolist())
+    input_names = ['weekday','hour', 'is_holiday'] + [ 'past_load_t' +str(t) for t in range(H_past)]
+    output_names = [ 'future_load_t' +str(t) for t in range(H_future)]
+    X = pd.DataFrame(X, columns=input_names)
+    y = pd.DataFrame(y, columns=output_names)
+    X_test , y_test, X_train, y_train = X[:n_test], y[:n_test], X[n_test:], y[n_test:]
+    return X_test, y_test, X_train, y_train
 
 
 def historical_hourly_demand(df_sequence, show=True):
