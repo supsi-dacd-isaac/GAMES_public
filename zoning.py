@@ -107,10 +107,10 @@ def plot_zone_duration_stats(stat_matrix_1, stat_matrix_2, TelAviv, label1=None,
     divider = make_axes_locatable(ax[1])
     cax = divider.append_axes("right", size="5%", pad=0.05)
     cbar = plt.colorbar(imsh, cax=cax)
-    if label1 is None:
+    if label2 is None:
         cbar.ax.set_ylabel('Std idle time [minutes]')
     else:
-        cbar.ax.set_ylabel(label1)
+        cbar.ax.set_ylabel(label2)
     fig.tight_layout()
     plt.show()
 

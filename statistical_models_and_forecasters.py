@@ -1,13 +1,24 @@
-
+"""from sklearn.metrics import mean_squared_error
+from yellowbrick.regressor import residuals_plot
+from yellowbrick.model_selection import FeatureImportances
+from scipy.spatial.distance import cdist
+from sklearn.neighbors import KernelDensity
+from sklearn.neural_network import MLPRegressor
+import xgboost as xgb
 import numpy as np
-import matplotlib.pyplot as plt
 import pickle
 from sklearn.ensemble import RandomForestRegressor
+from scipy.optimize import minimize
 from sklearn.metrics import mean_squared_error
+"""
+
+import matplotlib.pyplot as plt
+from sklearn.model_selection import GridSearchCV, cross_val_score, train_test_split
+from sklearn.ensemble import (RandomForestRegressor)#,  AdaBoostRegressor,  GradientBoostingRegressor,   HistGradientBoostingRegressor)
 import numpy as np
 
 class MobilityDemandForecaster:
-    def __init__(self, n_workers: int =4):
+    def __init__(self, n_workers: int = 4):
         # Create the RandomForestRegressor model
         self.model = RandomForestRegressor(random_state=0, n_jobs=n_workers, verbose=1)
         self.residuals = None  # Store the true residuals
@@ -15,9 +26,9 @@ class MobilityDemandForecaster:
 
 
     def fit(self, X, y):
-        param_grid = { 'n_estimators': [50],  # Number of trees in the forest
-                    'max_depth': [150],  # Maximum depth of the trees
-                    'min_samples_split': [5], } # Minimum number of samples required to split a node
+        param_grid = dict(n_estimators=[50],# Number of trees
+                          max_depth=[50, 150],# Max depth of the tree
+                          min_samples_split=[2, 5])  # Minimum number of samples required to split a node
         # Perform grid search with cross-validation
         grid_search = GridSearchCV(self.model, param_grid, cv=5, scoring='neg_mean_squared_error')
         grid_search.fit(X, y)
@@ -31,13 +42,11 @@ class MobilityDemandForecaster:
         self.residuals = y - y_pred
 
     def predict(self, X):
-        y_pred = np.maximum(self.model.predict(X),0)
-        y_pred_low = np.maximum(y_pred+np.quantile(self.residuals,0.95),0)
-        y_pred_up = y_pred+np.quantile(self.residuals,0.95)
+        y_pred = np.maximum(self.model.predict(X), 0)
+        y_pred_low = np.maximum(y_pred+np.quantile(self.residuals, 0.05), 0)
+        y_pred_up = y_pred+np.quantile(self.residuals, 0.95)
         uncertainty = [y_pred_low, y_pred_up]  # Assuming normal distribution, 95% confidence
         return y_pred, uncertainty
-
-
 
 
 
@@ -251,18 +260,3 @@ def analyze_relocations(df_sequence,
     return percentage_of_trips_after_relocation
 
 
-
-def flow_digraph(pivot_df_flows, min_flow=100, show=True):
-    """explain method"""
-    edge_df = pivot_df_flows.stack().reset_index()
-    edge_df.columns = ['start_zone', 'end_zone', 'flow']
-    # convert dataframe to list of tuples
-    edge_list = list(edge_df.to_records(index=False))
-    G = nx.DiGraph()
-    for e in edge_list:
-        if e[2] > min_flow:
-            G.add_edge(e[0], e[1], weight=e[2])
-    if show:
-        nx.draw(G, with_labels=True)
-        plt.show()
-    return G
