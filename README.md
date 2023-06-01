@@ -1,25 +1,25 @@
-# GAMES: Grid Aware Mobility and Energy Sharing: GAMES
-
- 
+                                               
+# GAMES: Grid Aware Mobility and Energy Sharing: GAMES 
+ <div style="text-align:center;">
+  <img src="figs_repo/Title_GAMES_project.png" alt="Example" width="600" />
+</div>
 ## Installation 
 Use python 3.9\
 Needed packages are in requirements.txt\
 `pip install -r requirements.txt`
-
  
-## DATA 
-
-## Raw data can be shared among the partners of the project (GAMES) and must be placed in the right folders
-`datasets/autotel` , `datasets/windkraft_simonsfeld`, `datasets/mobility` 
+## Data  
+Raw data can be shared among the partners of the project (GAMES) and must be placed in the following folders:  
+- `datasets/autotel`
+- `datasets/windkraft_simonsfeld`
+- `datasets/mobility`
  
-## Simulated mobility scenarios are available   
-* For instance, the dir `./mobility/simulated`  contins the following files:
-* `sim_reserv_df_in_zurich_1_day_from_userdemand.csv` simulated reservations for one day in Zurich (generated using a pool of user deamands for mobility) 
-* `sim_presence_matrx_in_zurich_6_months_statistical_sampler.csv` simulated presence matrix for six months in Zurich (generated with a statistical sampler) 
-
+Simulated mobility scenarios are available. For instance, the directory `./mobility/simulated` contains the following files:
+- `sim_reserv_df_in_zurich_1_day_from_userdemand.csv`: Simulated reservations for one day in Zurich (generated using a pool of user demands for mobility).
+- `sim_presence_matrx_in_zurich_6_months_statistical_sampler.csv`: Simulated presence matrix for six months in Zurich (generated with a statistical sampler).
 
 ## What to run
-#  
+  
 * demo_traffic_model
 ```python
 # Defne macroscopic traffic model &  street network for two geographical regions 
@@ -49,11 +49,15 @@ df, df_sequence = preprocess_trip_data_frame(df,TelAviv.get_minmax_lon_lat())
 results_daily = get_daily_profiles_data(df_sequence)
 matrix_day = results_daily['matrix_daily_departures'] # a [n_days x 24] array contining the total number of departures for each day and hour in the data set 
 ```
+<div style="text-align:center;">
+  <img src="figs_repo/Zurich_streetmap.png" alt="Image 1" width="400" />
+  <img src="figs_repo/TelAviv_map_shortest_trip_path_examples.png" alt="Image 2" width="400" />
+</div> 
 
 * demo_zoning_analysis
 ```python
 #  example of macroscopic zoning  
-n_disretized  = [21, 21]
+n_disretized  = [15, 15]
 # grid partition of lat and lon.... n_disretized[0] x n_disretized[1] ....append zone lat,lon and indices to the dataframe
 df_sequence_with_zones, linspace_lat, linspace_lon = define_zones(df_sequence, n_disretized_lat_lon=n_disretized) 
 #  get statistics of idle times and trip durations on each zone
@@ -65,8 +69,15 @@ plot_density_arrivals_departures_net_out_flows(Trips_duration_zone_stats['n_samp
                                                Idle_duration_zone_stats['n_samples'], TelAviv)
                                                
 ```
+  
 * demo_train_total_mobility_demand_forecaster
+```python
+```
+![Alt Text](figs_repo/Predict_net_number_of_departures.gif)
+
+
 * demo_space_time_probabilistic_forecaster
 
+```python
 
-
+```
