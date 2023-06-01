@@ -1,5 +1,5 @@
                                                
-# GAMES: Grid Aware Mobility and Energy Sharing: GAMES 
+#                                 GAMES 
  <div style="text-align:center;">
   <img src="figs_repo/Title_GAMES_project.png" alt="Example" width="600" />
 </div>
