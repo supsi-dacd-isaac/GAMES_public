@@ -50,6 +50,9 @@ results_daily = get_daily_profiles_data(df_sequence)
 matrix_day = results_daily['matrix_daily_departures'] # a [n_days x 24] array contining the total number of departures for each day and hour in the data set 
 ```
 
+![alt text](figs_repo/Zurich_streetmap.png)
+![alt text](figs_repo/TelAviv_map_shortest_trip_path_examples.png)
+
 * demo_zoning_analysis
 ```python
 #  example of macroscopic zoning  
