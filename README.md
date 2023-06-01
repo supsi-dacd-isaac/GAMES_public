@@ -73,8 +73,12 @@ plot_density_arrivals_departures_net_out_flows(Trips_duration_zone_stats['n_samp
 * demo_train_total_mobility_demand_forecaster
 ```python
 ```
-![Alt Text](figs_repo/Predict_net_number_of_departures.gif)
 
+<video width="600" controls playbackRate="0.5">
+  <source src="figs_repo/Predict_net_number_of_departures.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+ 
 
 * demo_space_time_probabilistic_forecaster
 
