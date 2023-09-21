@@ -75,12 +75,43 @@ plot_density_arrivals_departures_net_out_flows(Trips_duration_zone_stats['n_samp
 ```
  
 https://github.com/Roberock/GAMES/assets/17128742/288655aa-5acc-4f04-af71-1f594cd5737b
-
  
- 
-
 * demo_space_time_probabilistic_forecaster
 
 ```python
 
 ```
+
+
+
+* demo_max_coverage for EVs/Stations allocation
+
+```python
+    Gtr = Macroscopic_traffic_model(geographical_area='Tel Aviv, Israel')
+    data = np.array(df[['LONs','LATs']].values)
+    points = data[np.random.randint(0, len(data), (1,1000))]
+    # Number of sites to select
+    K, M = 80, 500
+    # Service radius of each site
+    radius = 0.0035
+    # Candidate site size (random sites generated) 
+    # Run mclp opt_sites is the location of optimal sites and f is the points covered
+    opt_sites, f = mclp(points, K, radius, M)
+
+    fig, ax = ox.plot_graph(Gtr.G_drive, node_alpha=0.1, bgcolor="#808080", node_color='k', edge_color='k', show=False,
+                            edge_alpha=0.3)
+
+    ax.scatter(points[:, 0], points[:, 1], 20, marker='x', c='b', alpha=0.9)
+    plt.scatter(opt_sites[:, 0], opt_sites[:, 1], 10, c='r', marker='+')
+    for site in opt_sites:
+        circle = plt.Circle(site, radius, color='r', fill=True, lw=2, alpha=0.3)
+        ax.add_artist(circle)
+    ax.axis('equal')
+    ax.tick_params(axis='both', left=False, top=False, right=False,
+                   bottom=False, labelleft=False, labeltop=False,
+                   labelright=False, labelbottom=False)
+    plt.show() 
+```
+<div style="text-align:center;"> 
+  <img src="figs_repo/max_coverage_problem.png" alt="Image 2" width="400" />
+</div> 
