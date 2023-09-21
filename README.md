@@ -112,6 +112,6 @@ https://github.com/Roberock/GAMES/assets/17128742/288655aa-5acc-4f04-af71-1f594c
                    labelright=False, labelbottom=False)
     plt.show() 
 ```
-<div style="text-align:center;"> 
-  <img src="figs_repo/max_coverage_problem.png" alt="Image 2" width="400" />
+ <div style="text-align:center;">
+  <img src="figs_repo/max_coverage_problem.png" alt="image 3" width="600" />
 </div> 
