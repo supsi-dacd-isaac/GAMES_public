@@ -146,5 +146,5 @@ def allocate_stations(start_coords,
 
 ```
  <div style="text-align:center;"> 
-  <img src="figs_repo/voronoi_50_vs500_clusters_vs_max_coverage" alt="Image 2" width="600" />
+  <img src="figs_repo/voronoi_50_vs500_clusters_vs_max_coverage.png" alt="Image 2" width="600" />
 </div> 
