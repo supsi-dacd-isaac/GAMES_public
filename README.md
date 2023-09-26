@@ -110,8 +110,41 @@ https://github.com/Roberock/GAMES/assets/17128742/288655aa-5acc-4f04-af71-1f594c
     ax.tick_params(axis='both', left=False, top=False, right=False,
                    bottom=False, labelleft=False, labeltop=False,
                    labelright=False, labelbottom=False)
-    plt.show() 
+    plt.show()
+
+def allocate_stations(start_coords,
+                      end_coords,
+                      n_stations=10,
+                      method='voronoi_k_mean',
+                      visualize=False):
+    """ devides the area in clusters and voronoi partitions
+    it uses - kmean clustering of departures to define 'good' coordinates for the stations voronoi-like partitioning uses kdtree to assign to end-dooeds a cluster ids"""
+
+    centers, node_start, node_end, closest_dist_station = [], [], [], []
+    if method == 'voronoi_k_mean':
+        centers = kmeans(start_coords, n_stations)[0]   # K-means clustering
+        node_start = vq(start_coords, centers)[0]
+        vor = Voronoi(centers)
+        voronoi_kdtree = cKDTree(centers)   # closest distance lookup
+        closest_dist_station, node_end = voronoi_kdtree.query(end_coords)
+
+    if visualize:
+        # Plotting
+        fig, ax = plt.subplots()
+        # fig, ax = ox.plot_graph(Gtr.G_drive, node_alpha=0.1, bgcolor="#cccccc", node_color='k', edge_color='k', show=False,  edge_alpha=0.1)
+        plot_data_points(start_coords, ax=ax)
+        voronoi_plot_2d(vor, ax=ax, show_vertices=False, show_points=False)
+        ax.tick_params(axis='both', left=False, top=False, right=False,
+                       bottom=False, labelleft=False, labeltop=False,
+                       labelright=False, labelbottom=False)
+        [plt.scatter(start_coords[node_start==cl][:,0], start_coords[node_start==cl][:,1])  for cl in np.unique(node_start)]
+        plot_kmeans_clustering(centers, ax=ax, alpha=0.99)
+        plt.show()
+    return centers, node_start, node_end, closest_dist_station
+
+
+
 ```
- <div style="text-align:center;">
-  <img src="figs_repo/max_coverage_problem.png" alt="image 3" width="600" />
+ <div style="text-align:center;"> 
+  <img src="figs_repo/TelAviv_map_shortest_trip_path_examples.png" alt="Image 2" width="400" />
 </div> 
